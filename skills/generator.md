@@ -122,31 +122,48 @@ int n = opt<int>("n", 100);
 
 인자 설계는 `problem.md`의 제약과 `validator.cpp`의 검증 조건을 벗어나면 안 됩니다.
 
+## Generator Strength
+
+generator는 단순 랜덤 입력만 만들면 안 됩니다. 문제의 풀이 정당성, 경계 조건, 성능 한계를 검증할 수 있도록 충분히 공격적으로 설계합니다.
+
+가능하면 아래 목적의 테스트를 각각 만들 수 있어야 합니다.
+
+- solution 정당성 검토용: 작은 입력, 완전 탐색 또는 독립 검증기와 비교하기 좋은 입력, 다양한 구조가 섞인 랜덤 입력
+- 극값 이탈 검사용: 최솟값, 최댓값, 경계값, 합/곱/누적값이 한계에 가까운 입력, 32-bit/64-bit overflow를 유발하기 쉬운 입력
+- 시간초과 유발용: 제한 내에서 가능한 큰 입력, 밀집 그래프/긴 문자열/큰 격자/최대 쿼리처럼 비효율 풀이를 드러내는 입력
+- 특수 구조 스트레스용: 정렬됨/역정렬됨/모두 같음/중복 많음/한쪽으로 치우친 트리/긴 체인/스타 그래프 등 문제별 약점을 찌르는 입력
+
+단, 모든 generator 출력은 항상 `problem.md`와 `validator.cpp`를 통과해야 합니다. overflow나 시간초과를 노리는 입력도 명세 밖의 잘못된 입력을 만들면 안 됩니다.
+
 ## Multiple Generators
 
-generator가 하나면 파일 이름은 `generator.cpp`를 사용합니다.
+generator가 하나면 파일 이름은 `generator.cpp`를 사용할 수 있습니다. 그러나 generator를 요청받았을 때는 가능하면 목적별 generator를 나누는 것을 우선합니다.
 
 용도별 generator가 여러 개 필요하면 파일 이름을 반드시 아래 형식으로 작성합니다.
 
 ```text
-generator-{number}.cpp
+generator-{purpose}.cpp
 ```
 
 예:
 
 ```text
-generator-1.cpp
-generator-2.cpp
-generator-3.cpp
+generator-correctness.cpp
+generator-boundary.cpp
+generator-tle.cpp
+generator-stress.cpp
 ```
 
 여러 generator를 둘 때는 역할을 명확히 나눕니다.
 
-- `generator-1.cpp`: 작은 랜덤 입력, brute force 검증용
-- `generator-2.cpp`: 큰 랜덤 입력, 성능 테스트용
-- `generator-3.cpp`: 최소/최대/경계값 테스트용
+- `generator-correctness.cpp`: 작은 입력, brute force 또는 solution 정당성 검토용
+- `generator-boundary.cpp`: 최소/최대/경계값, overflow 취약 풀이 검사용
+- `generator-tle.cpp`: 제한 내 가장 큰 입력, 시간초과 취약 풀이 검사용
+- `generator-stress.cpp`: 문제별 특수 구조와 약점을 반복적으로 찌르는 테스트용
 
-`generator-small.cpp`, `gen.cpp`, `random.cpp` 같은 이름은 사용하지 않습니다.
+`generator-{purpose}.cpp`의 `{purpose}`는 영어 소문자, 숫자, 하이픈만 사용합니다. 용도가 분명해야 하며 `gen.cpp`, `random.cpp`처럼 접두사 없는 이름은 사용하지 않습니다.
+
+이미 기존 문제에 `generator-{number}.cpp`가 있다면 유지할 수 있지만, 새로 만드는 generator는 목적 기반 이름을 우선합니다.
 
 ## Structural Data
 
@@ -166,4 +183,4 @@ tree, graph, permutation, grid 같은 구조를 생성할 때는 `problem.md`와
 - `problem.md`에 없는 형식을 출력하지 않습니다.
 - validator가 거절할 수 있는 데이터를 생성하지 않습니다.
 - 디버그 로그를 `stdout`에 출력하지 않습니다.
-- 여러 generator가 필요한데 `generator-{number}.cpp` 형식을 벗어난 이름을 사용하지 않습니다.
+- 여러 generator가 필요한데 목적이 불분명한 이름을 사용하지 않습니다.

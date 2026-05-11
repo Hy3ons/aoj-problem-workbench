@@ -15,6 +15,7 @@ problems/{문제 제목}/validator.cpp
 ```text
 problems/{문제 제목}/generator.cpp
 problems/{문제 제목}/generator-{number}.cpp
+problems/{문제 제목}/generator-{purpose}.cpp
 problems/{문제 제목}/gen_script.txt
 problems/{문제 제목}/wa-sol-{number}.cpp
 problems/{문제 제목}/wa-sol-{number}.py
@@ -66,8 +67,8 @@ problems/{문제 제목}/wa-sol-{number}.java
 - 각 파일을 만든 이유
 - `problem.md`가 정의하는 입력, 출력, 제약의 요약
 - `validator.cpp`가 검증하는 형식, 범위, 구조적 조건의 요약
-- `generator.cpp` 또는 `generator-{number}.cpp`가 있다면 각 generator의 목적, 인자, 생성하는 테스트 성격
-- `gen_script.txt`가 있다면 호출하는 generator, 인자 패턴, manual/small/max/random/stress 테스트 구분
+- `generator.cpp`, `generator-{number}.cpp`, `generator-{purpose}.cpp`가 있다면 각 generator의 목적, 인자, 생성하는 테스트 성격
+- `gen_script.txt`가 있다면 호출하는 generator, 인자 패턴, correctness/boundary/overflow/tle/small/max/random/stress/manual 테스트 구분
 - `wa-sol-{number}.cpp`, `wa-sol-{number}.py`, `wa-sol-{number}.java`가 있다면 각 코드가 의도적으로 틀린 풀이인 이유, 틀린 로직의 위치, 실패하는 입력 유형
 - 아직 모호하거나 사용자 확인이 필요한 항목
 
@@ -85,22 +86,30 @@ problems/{문제 제목}/wa-sol-{number}.java
 6. 배열이나 리스트 출력은 `if (i) cout << ' ';` 패턴을 사용한다.
 7. 디버그 로그를 `stdout`에 출력하지 않는다.
 8. 생성된 입력이 `validator.cpp`를 통과하도록 작성한다.
-9. `README.md`에 generator의 목적, 인자, 생성하는 테스트 유형을 갱신한다.
+9. 단순 랜덤 generator 하나로 끝내지 말고, 가능하면 목적별 generator를 나눈다.
+10. solution 정당성 검토용, 극값/overflow 취약 풀이 검사용, 시간초과 취약 풀이 검사용 대형 테스트 generator를 우선 설계한다.
+11. generator 파일을 만들거나 수정한 즉시 `README.md`에 generator의 목적, 인자, 생성하는 테스트 유형을 갱신한다.
 
-여러 generator가 필요하면 파일 이름은 반드시 아래 형식으로 쓴다.
+여러 generator가 필요하면 새 파일 이름은 목적 기반으로 쓰는 것을 우선한다.
 
 ```text
-generator-{number}.cpp
+generator-{purpose}.cpp
 ```
+
+예: `generator-correctness.cpp`, `generator-boundary.cpp`, `generator-tle.cpp`, `generator-stress.cpp`
+
+기존 문제에 이미 `generator-{number}.cpp`가 있으면 유지할 수 있지만, 새 generator는 목적이 드러나는 이름을 사용한다.
 
 `gen_script.txt` 생성을 요청받으면:
 
 1. `skills/gen-script.md`의 지침을 따른다.
 2. 스펙 §6 문법을 사용한다.
-3. `manual`, `generator-name [arguments]`, `for i in 1..5:` 형식을 사용한다.
-4. generator 인자를 바꿔 small, max, random, stress, brute force 검증용 테스트를 쉽게 만들 수 있게 작성한다.
-5. 존재하지 않는 generator 이름이나 generator가 해석하지 못하는 인자를 쓰지 않는다.
-6. `README.md`에 스크립트가 실행하는 generator와 테스트 구성을 갱신한다.
+3. `generator-name [arguments]`, `for i in 1..5:` 형식을 사용한다.
+4. `manual`은 사용자가 수동 테스트를 명시적으로 요청한 경우에만 쓴다.
+5. generator 인자를 바꿔 correctness, boundary, overflow, tle, small, max, random, stress 테스트를 쉽게 만들 수 있게 작성한다.
+6. 존재하는 목적별 generator를 모두 호출하도록 구성한다.
+7. 존재하지 않는 generator 이름이나 generator가 해석하지 못하는 인자를 쓰지 않는다.
+8. `gen_script.txt`를 만들거나 수정한 즉시 `README.md`에 스크립트가 실행하는 generator와 테스트 구성을 갱신한다.
 
 `wa-sol-{number}` 생성을 요청받으면:
 
