@@ -12,7 +12,7 @@
 - 큰 입력으로 성능 테스트
 - 최소값, 최대값, 경계값 테스트
 - 특정 구조를 반복 생성하는 스트레스 테스트
-- 직접 작성한 manual test 포함
+- 사용자가 명시적으로 요청한 경우에만 직접 작성한 manual test 포함
 
 ## 기본 문법
 
@@ -21,7 +21,6 @@
 허용하는 기본 형태:
 
 ```text
-manual
 generator-name [arguments]
 for i in 1..5:
     generator-name [arguments]
@@ -30,11 +29,12 @@ for i in 1..5:
 예:
 
 ```text
-manual
 generator 1
 for i in 1..5:
     generator i
 ```
+
+`manual`은 기본적으로 쓰지 않습니다. 사용자가 수동 테스트를 명시적으로 요청한 경우에만 필요한 위치에 추가합니다.
 
 ## Generator Name
 
@@ -87,7 +87,6 @@ generator는 이 인자를 사용해 다음을 조절할 수 있어야 합니다
 예:
 
 ```text
-manual
 generator 1 small
 generator 2 max
 for i in 1..30:
@@ -99,7 +98,6 @@ for i in 1..30:
 가능하면 아래 성격의 테스트가 포함되도록 작성합니다.
 
 ```text
-manual
 generator 1 min
 generator 2 max
 for i in 1..10:
@@ -112,11 +110,11 @@ for i in 31..40:
 
 각 항목의 의미:
 
-- `manual`: 사람이 직접 만든 예제 또는 특수 케이스
 - `small`: 작은 `n`, brute force 검증에 적합한 입력
 - `max`: 최대 크기 또는 성능 한계 입력
 - `random`: 일반 랜덤 입력
 - `stress`: 특정 약점을 노리는 반복 테스트
+- `manual`: 사용자가 명시적으로 요청한 경우에만 쓰는 사람이 직접 만든 예제 또는 특수 케이스
 
 ## Consistency Rule
 
@@ -134,4 +132,3 @@ for i in 31..40:
 - 여러 generator가 필요한데 `generator-{number}.cpp` 형식을 벗어난 이름을 사용하지 않습니다.
 - generator가 해석하지 못하는 인자를 넘기지 않습니다.
 - `problem.md`와 `validator.cpp`를 통과하지 못하는 테스트 생성을 의도하지 않습니다.
-
