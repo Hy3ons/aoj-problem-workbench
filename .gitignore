@@ -1,0 +1,8 @@
+# Keep repository-level documentation and skill guides trackable.
+
+# Ignore generated problem directories by default.
+problems/*
+
+# Keep the problems folder README.
+!problems/README.md
+
