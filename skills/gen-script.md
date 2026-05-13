@@ -24,15 +24,17 @@
 ```text
 generator-name [arguments]
 for i in 1..5:
-    generator-name [arguments]
+  generator-name [arguments]
 ```
+
+`for` 문 내부 명령은 반드시 공백 2개로 들여씁니다. 탭 문자나 공백 4개 들여쓰기는 사용하지 않습니다.
 
 예:
 
 ```text
 generator 1
 for i in 1..5:
-    generator i
+  generator i
 ```
 
 `manual`은 기본적으로 쓰지 않습니다. 사용자가 수동 테스트를 명시적으로 요청한 경우에만 필요한 위치에 추가합니다.
@@ -44,7 +46,7 @@ generator가 하나면 이름은 `generator`를 사용합니다.
 ```text
 generator 1
 for i in 1..10:
-    generator i
+  generator i
 ```
 
 여러 generator가 있으면 C++ 파일 이름과 맞춰 아래 이름을 사용합니다.
@@ -63,7 +65,7 @@ generator-correctness 1 small
 generator-boundary 1 max
 generator-tle 1 max
 for i in 1..20:
-    generator-stress i
+  generator-stress i
 ```
 
 여러 generator의 C++ 파일 이름은 새로 만들 때 다음 형식을 우선합니다.
@@ -95,7 +97,7 @@ generator는 이 인자를 사용해 다음을 조절할 수 있어야 합니다
 generator-correctness 1 small
 generator-boundary 2 overflow
 for i in 1..30:
-    generator-stress i random
+  generator-stress i random
 ```
 
 ## Required Test Mix
@@ -109,11 +111,11 @@ generator-boundary 2 max
 generator-boundary 3 overflow
 generator-tle 1 max
 for i in 1..10:
-    generator-correctness i random
+  generator-correctness i random
 for i in 11..30:
-    generator-stress i random
+  generator-stress i random
 for i in 31..40:
-    generator-tle i max
+  generator-tle i max
 ```
 
 각 항목의 의미:
@@ -143,4 +145,5 @@ for i in 31..40:
 - 여러 generator가 필요한데 목적이 불분명한 이름을 사용하지 않습니다.
 - generator가 해석하지 못하는 인자를 넘기지 않습니다.
 - 존재하는 목적별 generator 일부만 호출하고 나머지를 빠뜨리지 않습니다.
+- `for` 문 내부 명령을 탭 문자나 공백 4개로 들여쓰지 않습니다. 항상 공백 2개만 사용합니다.
 - `problem.md`와 `validator.cpp`를 통과하지 못하는 테스트 생성을 의도하지 않습니다.
