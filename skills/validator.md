@@ -32,17 +32,24 @@ int main(int argc, char* argv[]) {
 
 line-based input이면 strict parsing을 기본으로 합니다.
 
+숫자 리터럴이 4자리 이상이면 C++ digit separator인 `'`를 사용해 3자리마다 끊어 씁니다.
+
 ```cpp
-int n = inf.readInt(1, 200000, "n");
+int n = inf.readInt(3, 100'000'000, "n");
+long long x = inf.readLong(1, 1'000'000'000'000LL, "x");
+```
+
+```cpp
+int n = inf.readInt(1, 200'000, "n");
 inf.readEoln();
 ```
 
 한 줄에 여러 값이 있으면 공백과 줄 끝을 명확히 검증합니다.
 
 ```cpp
-int n = inf.readInt(1, 200000, "n");
+int n = inf.readInt(1, 200'000, "n");
 inf.readSpace();
-int m = inf.readInt(0, 200000, "m");
+int m = inf.readInt(0, 200'000, "m");
 inf.readEoln();
 ```
 
@@ -51,7 +58,7 @@ inf.readEoln();
 ```cpp
 for (int i = 0; i < n; i++) {
     if (i > 0) inf.readSpace();
-    int a = inf.readInt(1, 1000000000, format("a[%d]", i + 1));
+    int a = inf.readInt(1, 1'000'000'000, format("a[%d]", i + 1));
 }
 inf.readEoln();
 ```

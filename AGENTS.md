@@ -130,6 +130,7 @@ generator-{purpose}.cpp
 - 항상 `problem.md`를 먼저 작성하고, 그 내용을 보고 `validator.cpp`를 작성한다.
 - `validator.cpp`를 먼저 작성하거나, 아직 모호한 `problem.md`를 기준으로 validator를 추측해서 만들면 안 된다.
 - validator는 `testlib.h`를 사용하고 `registerValidation(argc, argv);`를 호출해야 한다.
+- validator의 C++ 숫자 리터럴이 4자리 이상이면 `100'000'000`처럼 `'`를 사용해 3자리마다 끊어 쓴다.
 - 숫자 범위뿐 아니라 입력의 구조적 정당성도 검증해야 한다.
 - tree, graph, grid, permutation, sorted array 같은 구조가 있으면 해당 구조가 정말 맞는지 validator에서 확인해야 한다.
 - graph나 tree 규칙이 불명확하면 directed 여부, self-loop 허용 여부, 중복 간선 허용 여부, 연결성 조건 등을 사용자에게 물어본다.

@@ -6,3 +6,6 @@ problems/*
 # Keep the problems folder README.
 !problems/README.md
 
+
+editorial
+.DS_Store
